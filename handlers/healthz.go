@@ -4,9 +4,15 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/CryptoNerdES/cn.example.api.user/models/responses"
+	response "github.com/CryptoNerdES/cn.example.api.user/models/responses"
 )
 
 func Healthz(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(response.NewHealthzResponse())
+	if r.Method != http.MethodGet {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		json.NewEncoder(w).Encode(response.HealthzResponse{Message: http.StatusText(http.StatusMethodNotAllowed)})
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(response.HealthzResponse{Message: http.StatusText(http.StatusOK)})
 }

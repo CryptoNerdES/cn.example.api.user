@@ -14,7 +14,7 @@ import (
 func TestReturnStatusOKWhenHealthz(t *testing.T) {
 	// Test set up
 	var res response.HealthzResponse
-	expectedResponse := response.NewHealthzResponse()
+	expectedRes := response.HealthzResponse{Message: http.StatusText(http.StatusOK)}
 	req := httptest.NewRequest("GET", "/healthz", nil)
 	w := httptest.NewRecorder()
 
@@ -27,6 +27,5 @@ func TestReturnStatusOKWhenHealthz(t *testing.T) {
 
 	// Check if function is doing the work right
 	assert.Equal(t, http.StatusOK, w.Result().StatusCode)
-	assert.Equal(t, expectedResponse.Message, res.Message)
-	assert.Equal(t, expectedResponse.StatusCode, res.StatusCode)
+	assert.Equal(t, expectedRes.Message, res.Message)
 }
